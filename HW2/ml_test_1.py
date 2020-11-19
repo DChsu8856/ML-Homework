@@ -10,7 +10,7 @@ Created on Mon Nov  9 23:02:31 2020
 The template of the main script of the machine learning process
 """
 
-
+import random
 import pickle
 import numpy as np
 import pickle
@@ -34,6 +34,7 @@ class MLPlay:
         filename="C:\\Users\\jerry\\MLGame-master\\games\\arkanoid\\ml\\svr_example.sav"
         model=pickle.load(open(filename, 'rb'))
         
+        random_left_right = random.randint(0,99)%2
         ball_center = scene_info["ball"][0]+2.5
         ball_height = scene_info["ball"][1]
         platform_center = scene_info["platform"][0]+20
@@ -50,13 +51,18 @@ class MLPlay:
             input = inp_temp[np.newaxis, :]
         
         # Make the caller to invoke `reset()` for the next round.
-        if (scene_info["status"] == "GAME_OVER" or
-            scene_info["status"] == "GAME_PASS"):
+        if (scene_info["status"] == "GAME_OVER"):
             return "RESET"
-
+        elif(scene_info["status"] == "GAME_PASS"):
+            return "RESET1"
+        
         elif not self.ball_served:
             self.ball_served = True
-            command = "SERVE_TO_LEFT"
+            
+            if random_left_right == 0:
+                command = "SERVE_TO_LEFT"
+            else:
+                command = "SERVE_TO_RIGHT"
             
         else:
            ### command = "NONE"
@@ -78,8 +84,12 @@ class MLPlay:
 
         return command
         
-        
+
+
     def reset(self):
+        self.ball_served = False
+
+    def reset1(self):
         """
         Reset the status
         """
