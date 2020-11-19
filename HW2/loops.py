@@ -257,13 +257,13 @@ class MLExecutor:
                 self._frame_count = 0
                 self._ml_ready()
                 continue
-            
+###############################################################################
             if command == "RESET1":
                 ml.reset1()
                 self._frame_count = 0
                 self._ml_ready()
                 continue
-
+###############################################################################
             if command is not None:
                 self._comm_manager.send_to_game({
                     "frame": self._frame_count,
